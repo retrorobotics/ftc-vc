@@ -35,6 +35,8 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 public class RRHardwarePushbot
 {
+    double USELESS_VALUE = 1;
+    
     // toggle telemetry data
     public boolean DEBUG_MODE_ON = true;
     public boolean FRONT_DRIVE = true;
