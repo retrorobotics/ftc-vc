@@ -20,6 +20,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import static java.lang.Thread.sleep;
 
+import android.graphics.Color;
+
 @TeleOp(name="Teleop Comp 3", group="Pushbot")
 //@Disabled
 public class TeleopComp3 extends OpMode{
@@ -62,7 +64,30 @@ public class TeleopComp3 extends OpMode{
         robot.ringLoader.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.ringLoader.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        robot.ledRiver = hardwareMap.get(LEDRiver.IMPL, "led");
+        robot.ledRiver.setMode(LEDRiver.Mode.INDIVIDUAL);
+        robot.ledRiver.setLEDMode(LEDRiver.LEDMode.RGB);
+        robot.ledRiver.setColorDepth(LEDRiver.ColorDepth.BIT_24);
+        robot.ledRiver.setHide(false);
 
+        robot.ledRiver.setBrightness(0.1);
+        robot.ledRiver.setColor(0, Color.TRANSPARENT);
+        robot.ledRiver.setColor(1, Color.TRANSPARENT);
+        robot.ledRiver.setColor(2, Color.TRANSPARENT);
+        robot.ledRiver.setColor(3, Color.TRANSPARENT);
+        robot.ledRiver.setColor(4, Color.TRANSPARENT);
+        robot.ledRiver.setColor(5, Color.TRANSPARENT);
+        robot.ledRiver.setColor(6, Color.TRANSPARENT);
+        robot.ledRiver.setColor(7, Color.TRANSPARENT);
+        robot.ledRiver.setColor(8, Color.TRANSPARENT);
+        robot.ledRiver.setColor(9, Color.TRANSPARENT);
+        robot.ledRiver.setColor(10, Color.TRANSPARENT);
+        robot.ledRiver.setColor(11, Color.TRANSPARENT);
+        robot.ledRiver.setColor(12, Color.TRANSPARENT);
+        robot.ledRiver.setColor(13, Color.TRANSPARENT);
+        robot.ledRiver.setColor(14, Color.TRANSPARENT);
+        robot.ledRiver.setColor(15, Color.TRANSPARENT);
+        robot.ledRiver.apply();
 
     }
 
@@ -79,6 +104,7 @@ public class TeleopComp3 extends OpMode{
 
     }
 
+
     /*
      * Code to run ONCE when the driver hits PLAY
      */
@@ -90,11 +116,14 @@ public class TeleopComp3 extends OpMode{
     float rightFront = 0;
     float leftBack = 0;
     float rightBack = 0;
+
+    int MAX_LED = 16;
     /*
      * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
      */
     @Override
     public void loop() {
+
         // NEWCODE
         double wallDist;
 
@@ -107,13 +136,227 @@ public class TeleopComp3 extends OpMode{
         //cast to int
         //cast back to double
         //and divide by ten.
-        wallDist = (int)wallDist * 10;
-        wallDist = (double)wallDist / 10;
+        wallDist = (int) wallDist * 10;
+        wallDist = (double) wallDist / 10;
         telemetry.addData("DISTANCE", wallDist);
         telemetry.addData("**********", "**********");
         telemetry.update();
 
+        int loopCount;
+
+        telemetry.addData("Distance", robot.rightDistanceSensor.getDistance(DistanceUnit.INCH));
+        telemetry.update();
+        if (robot.LED_ON == 1){
+        // OUTSIDE RANGE
+        if ((robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) >= (robot.POWERSHOT_PERFECT + 8)) || (robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) <= (robot.POWERSHOT_PERFECT - 8))) {
+            telemetry.addData("Distance", "OUT OF RANGE");
+            telemetry.update();
+
+            robot.ledRiver.setBrightness(0.1);
+            robot.ledRiver.setColor(0, Color.RED);
+            robot.ledRiver.setColor(1, Color.RED);
+            robot.ledRiver.setColor(2, Color.TRANSPARENT);
+            robot.ledRiver.setColor(3, Color.TRANSPARENT);
+            robot.ledRiver.setColor(4, Color.TRANSPARENT);
+            robot.ledRiver.setColor(5, Color.TRANSPARENT);
+            robot.ledRiver.setColor(6, Color.TRANSPARENT);
+            robot.ledRiver.setColor(7, Color.TRANSPARENT);
+            robot.ledRiver.setColor(8, Color.TRANSPARENT);
+            robot.ledRiver.setColor(9, Color.TRANSPARENT);
+            robot.ledRiver.setColor(10, Color.TRANSPARENT);
+            robot.ledRiver.setColor(11, Color.TRANSPARENT);
+            robot.ledRiver.setColor(12, Color.TRANSPARENT);
+            robot.ledRiver.setColor(13, Color.TRANSPARENT);
+            robot.ledRiver.setColor(14, Color.RED);
+            robot.ledRiver.setColor(15, Color.RED);
+            robot.ledRiver.apply();
+        }
+
+        // PERFECT
+        if ((robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) >= (robot.POWERSHOT_PERFECT - 1)) && (robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) <= (robot.POWERSHOT_PERFECT + 1))) {
+            telemetry.addData("Distance", "PERFECT");
+            telemetry.update();
+
+            setLEDBackground();
+
+            robot.ledRiver.setColor(7, Color.MAGENTA);
+            robot.ledRiver.setColor(8, Color.MAGENTA);
+            robot.ledRiver.apply();
+
+            robot.ledRiver.setColor(7, Color.GREEN);
+            robot.ledRiver.setColor(8, Color.GREEN);
+            robot.ledRiver.apply();
+
+            robot.ledRiver.setColor(7, Color.MAGENTA);
+            robot.ledRiver.setColor(8, Color.MAGENTA);
+            robot.ledRiver.apply();
+
+            robot.ledRiver.setColor(7, Color.GREEN);
+            robot.ledRiver.setColor(8, Color.GREEN);
+            robot.ledRiver.apply();
+
+        }
+        // Off by 1 -2 on right side
+        if ((robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) >= (robot.POWERSHOT_PERFECT - 2)) && (robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) <= (robot.POWERSHOT_PERFECT - 1))) {
+
+            telemetry.addData("Distance", "1 - 2 RIGHT");
+            telemetry.update();
+
+            setLEDBackground();
+            robot.ledRiver.setColor(9, Color.GREEN);
+            robot.ledRiver.apply();
+        }
+        // Off by 2 - 3 on right side
+        if ((robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) >= (robot.POWERSHOT_PERFECT - 3)) && (robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) <= (robot.POWERSHOT_PERFECT - 2))) {
+
+            telemetry.addData("Distance", "2 - 3 RIGHT");
+            telemetry.update();
+
+            setLEDBackground();
+            robot.ledRiver.setColor(10, Color.GREEN);
+            robot.ledRiver.apply();
+        }
+        // Off by 3 - 4 on right side
+        if ((robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) >= (robot.POWERSHOT_PERFECT - 4)) && (robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) <= (robot.POWERSHOT_PERFECT - 3))) {
+
+            telemetry.addData("Distance", "3 - 4 RIGHT");
+            telemetry.update();
+
+            setLEDBackground();
+            robot.ledRiver.setColor(11, Color.GREEN);
+            robot.ledRiver.apply();
+        }
+        // Off by 4 - 5 on right side
+        if ((robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) >= (robot.POWERSHOT_PERFECT - 5)) && (robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) <= (robot.POWERSHOT_PERFECT - 4))) {
+
+            telemetry.addData("Distance", "4 - 5 RIGHT");
+            telemetry.update();
+
+            setLEDBackground();
+            robot.ledRiver.setColor(12, Color.GREEN);
+            robot.ledRiver.apply();
+        }
+        // Off by 5 - 6 on right side
+        if ((robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) >= (robot.POWERSHOT_PERFECT - 6)) && (robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) <= (robot.POWERSHOT_PERFECT - 5))) {
+
+            telemetry.addData("Distance", "5 - 6 RIGHT");
+            telemetry.update();
+
+            setLEDBackground();
+            robot.ledRiver.setColor(13, Color.GREEN);
+            robot.ledRiver.apply();
+        }
+        // Off by 6 - 7 on right side
+        if ((robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) >= (robot.POWERSHOT_PERFECT - 7)) && (robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) <= (robot.POWERSHOT_PERFECT - 6))) {
+
+            telemetry.addData("Distance", "6 - 7 RIGHT");
+            telemetry.update();
+
+            setLEDBackground();
+            robot.ledRiver.setColor(14, Color.GREEN);
+            robot.ledRiver.apply();
+        }
+        // Off by 7 - 8 on right side
+        if ((robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) >= (robot.POWERSHOT_PERFECT - 8)) && (robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) <= (robot.POWERSHOT_PERFECT - 7))) {
+
+            telemetry.addData("Distance", "7 - 8 RIGHT");
+            telemetry.update();
+
+            setLEDBackground();
+            robot.ledRiver.setColor(15, Color.GREEN);
+            robot.ledRiver.apply();
+        }
+
+        // Off by 1 -2 on left side
+        if ((robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) <= (robot.POWERSHOT_PERFECT + 2)) && (robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) >= (robot.POWERSHOT_PERFECT + 1))) {
+
+            telemetry.addData("Distance", "1 - 2 LEFT");
+            telemetry.update();
+
+            setLEDBackground();
+            robot.ledRiver.setColor(6, Color.GREEN);
+            robot.ledRiver.apply();
+        }
+        // Off by 2 - 3 on left side
+        if ((robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) <= (robot.POWERSHOT_PERFECT + 3)) && (robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) >= (robot.POWERSHOT_PERFECT + 2))) {
+
+            telemetry.addData("Distance", "2 - 3 LEFT");
+            telemetry.update();
+
+            setLEDBackground();
+            robot.ledRiver.setColor(5, Color.GREEN);
+            robot.ledRiver.apply();
+        }
+        // Off by 3 - 4 on left side
+        if ((robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) <= (robot.POWERSHOT_PERFECT + 4)) && (robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) >= (robot.POWERSHOT_PERFECT + 3))) {
+
+            telemetry.addData("Distance", "3 - 4 LEFT");
+            telemetry.update();
+
+            setLEDBackground();
+            robot.ledRiver.setColor(4, Color.GREEN);
+            robot.ledRiver.apply();
+        }
+        // Off by 4 - 5 on left side
+        if ((robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) <= (robot.POWERSHOT_PERFECT + 5)) && (robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) >= (robot.POWERSHOT_PERFECT + 4))) {
+
+            telemetry.addData("Distance", "4 - 5 LEFT");
+            telemetry.update();
+
+            setLEDBackground();
+            robot.ledRiver.setColor(3, Color.GREEN);
+            robot.ledRiver.apply();
+        }
+        // Off by 5 - 6 on left side
+        if ((robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) <= (robot.POWERSHOT_PERFECT + 6)) && (robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) >= (robot.POWERSHOT_PERFECT + 5))) {
+
+            telemetry.addData("Distance", "5 - 6 LEFT");
+            telemetry.update();
+
+            setLEDBackground();
+            robot.ledRiver.setColor(2, Color.GREEN);
+            robot.ledRiver.apply();
+        }
+        // Off by 6 - 7 on left side
+        if ((robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) <= (robot.POWERSHOT_PERFECT + 7)) && (robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) >= (robot.POWERSHOT_PERFECT + 6))) {
+
+            telemetry.addData("Distance", "6 - 7 LEFT");
+            telemetry.update();
+
+            setLEDBackground();
+            robot.ledRiver.setColor(1, Color.GREEN);
+            robot.ledRiver.apply();
+        }
+        // Off by 7 - 8 on left side
+        if ((robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) <= (robot.POWERSHOT_PERFECT + 8)) && (robot.rightDistanceSensor.getDistance(DistanceUnit.INCH) >= (robot.POWERSHOT_PERFECT + 7))) {
+
+            telemetry.addData("Distance", "7 - 8 LEFT");
+            telemetry.update();
+
+            setLEDBackground();
+            robot.ledRiver.setColor(0, Color.GREEN);
+            robot.ledRiver.apply();
+        }
+    }
+
+
         // END NEWCODE
+
+
+
+        if (gamepad1.right_trigger > 0.2 && !robot.rightTrigger1Pressed){
+
+
+            robot.rightTrigger1Pressed = true;
+            telemetry.update();
+            robot.LED_ON = robot.LED_ON + 1;
+            if (robot.LED_ON > 1){
+                robot.LED_ON = 0;
+            }
+        }
+        if (robot.rightTrigger1Pressed && !(gamepad1.right_trigger > 0.2)) {
+            robot.rightTrigger1Pressed = false;
+        }
 
         // Slow drive mode is activated if the left bumper is push and held down
         if (gamepad1.left_bumper) {
@@ -191,7 +434,7 @@ public class TeleopComp3 extends OpMode{
             robot.leftTrigger1Pressed = false;
         }
 
-
+/*
         if (gamepad1.right_trigger > 0.2 && !robot.rightTriggerPressed) {
             if (robot.RIGHT_BLOCK_POSITION == 0) {
                 robot.rightRingBlock.setPosition(robot.RIGHT_RING_BLOCK_OPEN);
@@ -211,7 +454,7 @@ public class TeleopComp3 extends OpMode{
         if (robot.rightTriggerPressed && !(gamepad1.right_trigger > 0.2)) {
             robot.rightTriggerPressed = false;
         }
-
+*/
 
 
 
@@ -447,6 +690,19 @@ public class TeleopComp3 extends OpMode{
 
         // set the mode to run until the distance is achieved
         ringLoader.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+    }
+
+    public void setLEDBackground() {
+        // setup LED light strip background color
+        int LEDCount = 0;
+
+        while (LEDCount < MAX_LED) {
+            robot.ledRiver.setColor(LEDCount, Color.BLUE);
+            LEDCount = LEDCount + 1;
+        }
+        robot.ledRiver.apply();
     }
 
     /**

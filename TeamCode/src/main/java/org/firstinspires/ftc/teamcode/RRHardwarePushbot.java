@@ -35,13 +35,12 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 public class RRHardwarePushbot
 {
-  
-    
     // toggle telemetry data
     public boolean DEBUG_MODE_ON = true;
     public boolean FRONT_DRIVE = true;
     public boolean TOUCH_SENSOR_PRESSED = false;
     public boolean xPressed = false;
+    public boolean rightTrigger1Pressed = false;
     public boolean leftTriggerPressed = false;
     public boolean leftTrigger1Pressed = false;
     public boolean rightTriggerPressed = false;
@@ -174,6 +173,8 @@ public class RRHardwarePushbot
     // Web Cam
     public OpenCvInternalCamera phoneCam;
 
+    // LED's
+    LEDRiver ledRiver = null;
 
     // ENCODER DRIVING CONSTANTS
     // length of 1 tile in inches - 22.75 inches according to game manual
@@ -182,6 +183,39 @@ public class RRHardwarePushbot
     double WHEEL_DIAMETER = 2.95;
     // circumference of wheel - ie. the distance covered by 1 revolution of the wheels
     double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER *3.14;
+
+    public double POWERSHOT_PERFECT = 19;
+
+    public int LED_ON = 0;
+
+    // Percentage values for LED's
+    public double PERFECT_PERCENTAGE = 0.02;
+
+    public double SLIGHTLY_TO_LEFT_LOW_PERCENTAGE = 0.03;
+    public double SLIGHTLY_TO_LEFT_HIGH_PERCENTAGE = 0.08;
+
+    public double SLIGHTLY_TO_RIGHT_LOW_PERCENTAGE = 0.03;
+    public double SLIGHTLY_TO_RIGHT_HIGH_PERCENTAGE = 0.08;
+
+    public double TO_THE_LEFT_LOW_PERCENTAGE = 0.09;
+    public double TO_THE_LEFT_HIGH_PERCENTAGE = 0.14;
+
+    public double TO_THE_RIGHT_LOW_PERCENTAGE = 0.09;
+    public double TO_THE_RIGHT_HIGH_PERCENTAGE = 0.14;
+
+    public double EXTREME_TO_THE_LEFT_LOW_PERCENTAGE = 0.15;
+    public double EXTREME_TO_THE_LEFT_HIGH_PERCENTAGE = 0.2;
+
+    public double EXTREME_TO_THE_RIGHT_LOW_PERCENTAGE = 0.15;
+    public double EXTREME_TO_THE_RIGHT_HIGH_PERCENTAGE = 0.2;
+
+    public double OUT_OF_RANGE_PERCENTAGE = 0.21;
+
+
+
+
+
+
 
     // number of motor tickets for a single revolution of the motor/wheel driving front and back
     // Testing results with 22.75 target:

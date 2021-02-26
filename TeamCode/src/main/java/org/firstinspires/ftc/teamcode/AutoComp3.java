@@ -143,6 +143,30 @@ public class  AutoComp3 extends LinearOpMode {
         robot.tiltElevatorServo.setPosition(robot.TILT_SERVO_UP);
         robot.leftRingBlock.setPosition(robot.RING_BLOCK_CLOSE);
 
+        robot.ledRiver = hardwareMap.get(LEDRiver.IMPL, "led");
+        robot.ledRiver.setMode(LEDRiver.Mode.INDIVIDUAL);
+        robot.ledRiver.setLEDMode(LEDRiver.LEDMode.RGB);
+        robot.ledRiver.setColorDepth(LEDRiver.ColorDepth.BIT_24);
+        robot.ledRiver.setHide(false);
+
+        robot.ledRiver.setColor(0, Color.TRANSPARENT);
+        robot.ledRiver.setColor(1, Color.TRANSPARENT);
+        robot.ledRiver.setColor(2, Color.TRANSPARENT);
+        robot.ledRiver.setColor(3, Color.TRANSPARENT);
+        robot.ledRiver.setColor(4, Color.TRANSPARENT);
+        robot.ledRiver.setColor(5, Color.TRANSPARENT);
+        robot.ledRiver.setColor(6, Color.TRANSPARENT);
+        robot.ledRiver.setColor(7, Color.TRANSPARENT);
+        robot.ledRiver.setColor(8, Color.TRANSPARENT);
+        robot.ledRiver.setColor(9, Color.TRANSPARENT);
+        robot.ledRiver.setColor(10, Color.TRANSPARENT);
+        robot.ledRiver.setColor(11, Color.TRANSPARENT);
+        robot.ledRiver.setColor(12, Color.TRANSPARENT);
+        robot.ledRiver.setColor(13, Color.TRANSPARENT);
+        robot.ledRiver.setColor(14, Color.TRANSPARENT);
+        robot.ledRiver.setColor(15, Color.TRANSPARENT);
+        robot.ledRiver.apply();
+
         waitForStart();
 
         // Initialize and Setup Gyro Sensor
@@ -171,7 +195,7 @@ public class  AutoComp3 extends LinearOpMode {
             // Hardcode ring count for testing
             // *********************
 
-            // ringsDetected = 0;
+             //ringsDetected = 0;
 
             // *********************
 
@@ -954,7 +978,7 @@ public class  AutoComp3 extends LinearOpMode {
 
         // changed from 150
         final int FOUR_RING_THRESHOLD = 132;
-        // changed from 135
+        // changed from 126
         final int ONE_RING_THRESHOLD = 126;
         // ******** Retro Updates End
 
